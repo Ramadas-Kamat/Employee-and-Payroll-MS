@@ -6,7 +6,12 @@ from .models import Employee, Attendance , Worksite
 
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
-    list_display = ("id", "name",'doj')
+    list_display = ("id", "name",'doj','worksite')
+    def worksite(self,obj):
+        site = obj.work
+
+        return site.name
+    worksite.short_description = "Worksite"
 
 @admin.register(Worksite)
 class WorksiteAdmin(admin.ModelAdmin):
