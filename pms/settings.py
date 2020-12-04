@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['0.0.0.0','192.168.43.139','localhost','127.0.0.1']
 
 INSTALLED_APPS = [
     'employee.apps.EmployeeConfig',
+    'salary.apps.SalaryConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

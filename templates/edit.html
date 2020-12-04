@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Salary</title>
+</head>
+<body>
+    <form action=editsal method="POST">
+        {% csrf_token%}
+        <table style="background-color: bisque;">
+            <tr>
+                <td>
+                    <label for="id">Salary id</label><br>
+                    <input type="number" value="{{obj.id}}" name="id" readonly>
+                    <!--<p name="id">{{obj.id}}</p>-->
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="wage">Wages</label><br>
+                    <input type="number" value="{{obj.wages}}" name="wage">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="bonus">Bonus</label><br>
+                    <input type="number" value="{{obj.bonus}}" name="bonus">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="claims">Claims</label><br>
+                    <input type="number" value="{{obj.claims}}" name="claims">
+                </td>
+            </tr>
+        </table>
+        <input type="submit" value="Change">
+    </form>
+</body>
+</html>

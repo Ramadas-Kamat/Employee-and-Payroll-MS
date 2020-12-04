@@ -1,4 +1,5 @@
 from django.db import models
+from salary.models import Salary
 #from .models2 import Worksite
 # Create your models here.
 class Employee(models.Model):
@@ -6,6 +7,7 @@ class Employee(models.Model):
     sex = models.CharField(max_length=10)
     doj = models.DateField()
     work = models.ForeignKey('Worksite',on_delete=models.CASCADE, null=True)
+    salary = models.OneToOneField(Salary,on_delete= models.CASCADE,null=True)
     class Meta:
         ordering = ('id','name','doj')
 
