@@ -1,19 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee details</title>
-</head>
-<body>
+{% extends 'base.html'%}
+
+{%block content%}
     <h1 style="color: darkgreen;">{{obj.name}}</h1>
-    <div style="background-color: coral;">
-        Sex : {{obj.sex}}<br>
-        DOJ : {{obj.doj}}
-    </div>
-    <div style="background-color:rgb(163, 194, 24);">
-        In time : {{atd.in_time}}<br>
-        Out time : {{atd.out_time}}
-    </div>
-</body>
-</html>
+        <div style="background-color: coral;">
+            Sex : {{obj.sex}}<br>
+            DOJ : {{obj.doj}}
+        </div>
+       <!--<div style="background-color:rgb(163, 194, 24);">
+            In time : {{atd.in_time}}<br>
+            Out time : {{atd.out_time}}-->
+        </div>
+        <table>
+            <tr>
+                <td>
+                    In time
+                </td>
+                <td>
+                    Out time
+                </td>
+                
+            </tr>
+            {% for a in atd%}
+                <tr>
+                    <td>
+                        {{a.in_time}}
+                    </td>
+                    <td>
+                        {{a.out_time}}
+                    </td>
+                </tr>
+            {%endfor%}
+        </table>
+{%endblock%}

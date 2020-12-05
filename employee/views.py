@@ -84,19 +84,20 @@ def search(request):
     try:
         #Better for prefixes
         obj = Employee.objects.filter(name__icontains=name)[0]  
-        atd = Attendance.objects.get(emp_id= obj.id)
+        atd = Attendance.objects.filter(emp_id= obj.id)
         return render(request,'details.html',{'obj':obj,'atd':atd})
     
     except Exception as e:
         exc = "No employee named " + name
+        print(e)
         #return render(request, 'exception.html',{'exc':exc})
         messages.info(request, exc)
-        return redirect('/')
+        return redirect('/load')
 
 def loader(request):
-    '''return render(request,'showatdnc.html')
+    return render(request,'index1.html')
 
-def show_attendance(request):'''
+def show_attendance(request):
     atd = Attendance.objects.filter(date='2020-11-15')
     
     return render(request,'showatdnc.html',{'objects':atd})
