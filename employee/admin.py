@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import Employee, Attendance , Worksite
+from .models import Employee, Attendance , Worksite, Category
 #from .models2 import Worksite
 # Register your models here.
 #admin.site.register((Attendance, Worksite))
-
+#admin.site.register(Category)
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
     list_display = ("id", "name",'doj','worksite')
@@ -31,3 +31,7 @@ class AttendanceAdmin(admin.ModelAdmin):
 
         return emp.name
     emp_name.short_description = "Name"
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ("id", "name")
