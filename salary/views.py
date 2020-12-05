@@ -28,3 +28,5 @@ def edit_sal(request):
             msg='Failed to update'
         messages.info(request,msg)
         return redirect('/salary')
+
+

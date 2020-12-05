@@ -92,3 +92,11 @@ def search(request):
         #return render(request, 'exception.html',{'exc':exc})
         messages.info(request, exc)
         return redirect('/')
+
+def loader(request):
+    '''return render(request,'showatdnc.html')
+
+def show_attendance(request):'''
+    atd = Attendance.objects.filter(date='2020-11-15')
+    
+    return render(request,'showatdnc.html',{'objects':atd})
