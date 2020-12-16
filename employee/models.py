@@ -16,6 +16,9 @@ class Employee(models.Model):
 
     class Meta:
         ordering = ('id','name','doj')
+    
+    def get_employee(id):
+        return Employee.objects.get(id=id)
 
 class Worksite(models.Model):
     name = models.CharField(max_length=20)       
@@ -40,4 +43,4 @@ class Attendance(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=15)
-    
+    num_of_emp = models.IntegerField(default=0,null=True,blank=True)

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
-from .models import Employee, Attendance
+from .models import * #Employee, Attendance, Worksite, Category
 import datetime
 #import Exception
 # Create your views here.
@@ -95,7 +95,13 @@ def search(request):
         return redirect('/load')
 
 def loader(request):
-    return render(request,'index1.html')
+    
+    atd = Attendance.objects.filter(date='2020-12-4')
+    obj = atd.count()
+    query = atd.query
+    
+    return render(request,'load.html',{'query':query,'ans':obj})
+    #return render(request,'index1.html')
 
 def show_attendance(request):
     atd = Attendance.objects.filter(date='2020-11-15')
