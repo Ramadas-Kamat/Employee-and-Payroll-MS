@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Employee, Attendance , Worksite, Category
+from .models import *
 #from .models2 import Worksite
 # Register your models here.
 #admin.site.register((Attendance, Worksite))
@@ -35,3 +35,8 @@ class AttendanceAdmin(admin.ModelAdmin):
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ("id", "name")
+
+@admin.register(LabourHour)
+class LabourHourAdmin(admin.ModelAdmin):
+    list_display = ("date","emp_id", 'worksite','hours','overtime_shifts'\
+        ,'unrecorded_shifts')

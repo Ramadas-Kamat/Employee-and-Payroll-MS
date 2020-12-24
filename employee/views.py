@@ -7,7 +7,7 @@ import datetime
 # Create your views here.
 
 def display(request):
-    return render(request,'index.html')
+    return render(request,'index1.html')
 def register(request):
     if request.method == 'POST':
         fn = request.POST['first_name']
@@ -92,7 +92,7 @@ def search(request):
         print(e)
         #return render(request, 'exception.html',{'exc':exc})
         messages.info(request, exc)
-        return redirect('/load')
+        return redirect('/')
 
 def loader(request):
     
