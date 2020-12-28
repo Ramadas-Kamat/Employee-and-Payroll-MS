@@ -38,5 +38,22 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(LabourHour)
 class LabourHourAdmin(admin.ModelAdmin):
-    list_display = ("date","emp_id", 'worksite','hours','overtime_shifts'\
-        ,'unrecorded_shifts')
+    list_display = ("date","emp_id", 'worksite','hours','overtime_hours'\
+        ,'unrecorded_hours')
+
+@admin.register(WorkingShift)
+class WorkingShiftAdmin(admin.ModelAdmin):
+    list_display = ('month','work','cat','days')
+
+    def work(self,obj):
+        return obj.worksite.name
+    
+    def cat(self,obj):
+        return obj.category.name
+
+    def days(self, obj):
+        return obj.working_days
+    
+    cat.short_description='Category'
+    work.short_description='Worksite'
+    days.short_description='No. of working days'

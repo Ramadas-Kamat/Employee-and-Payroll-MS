@@ -2,18 +2,24 @@ from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 import re
 from django.core.exceptions import ValidationError
+from month.models import MonthField
+from django.contrib.auth.models import User
 #from .models2 import Worksite
 # Create your models here.
 class Employee(models.Model):
+
     name = models.CharField(max_length=30)
     lname = models.CharField(max_length=30,null=True)
+    username = models.ForeignKey(User,on_delete=models.CASCADE,null=True)
     sex = models.CharField(max_length=10)
     doj = models.DateField()
     work = models.ForeignKey('Worksite',on_delete=models.CASCADE, null=True)
+    category = models.ForeignKey('Category',on_delete=models.CASCADE, null=True)
     base_sal = models.FloatField(default=0)
     supervisor = models.ForeignKey('self',on_delete=models.CASCADE,null=True,blank=True)
     #salary = models.OneToOneField(Salary,on_delete= models.CASCADE,null=True)
     contact = PhoneNumberField(null=True,blank=True,unique=True)
+    image = models.ImageField(upload_to="profpics",null=True)
     def __str__(self):
         return self.name
 
@@ -66,10 +72,20 @@ class LabourHour(models.Model):
     emp_id = models.ForeignKey(Employee, on_delete = models.CASCADE)
     worksite =  models.ForeignKey(Worksite, on_delete = models.CASCADE,null=True)
     hours = models.FloatField(default=0)
-    overtime_shifts=models.IntegerField(default=0)
-    unrecorded_shifts = models.IntegerField(default=0)
+    overtime_hours=models.IntegerField(default=0)
+    unrecorded_hours = models.IntegerField(default=0)
     class Meta:
         unique_together = ('emp_id','date')
 
     def __str__(self):
         return str(self.emp_id.name)+str(self.date)
+
+class WorkingShift(models.Model):
+    month = MonthField(null=False,blank=False)
+    worksite = models.ForeignKey(Worksite,on_delete=models.CASCADE, null=False)
+    category  = models.ForeignKey(Category,on_delete=models.CASCADE, null=False)
+    working_days = models.IntegerField(default=27)
+    leaves_allowed = models.IntegerField(default=0)
+
+    class Meta:
+        unique_together = ('month','worksite','category')

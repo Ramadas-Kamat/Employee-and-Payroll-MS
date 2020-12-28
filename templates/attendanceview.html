@@ -1,0 +1,82 @@
+{% extends 'base_index.html' %}
+{%block title%}
+Attendance
+{%endblock%}
+
+{%block content%}
+
+
+<div class="container">
+    
+    <div class="row">
+      <div class="col-md-4">
+        <div class="step">
+          <span class="number">Employee</span>
+          <h3>{{emp.name}}</h3>
+          <ul class="list-unstyled">
+            <li>Employee id: {{emp.id}}</li>
+            <li>Phone no: {{emp.contact}}</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="step">
+          <span class="number">Worksite</span>
+          <h3>{{emp.work}}</h3>
+          <ul class="list-unstyled">
+            <li>Category: {{emp.category}}</li>
+            <li>Supervisor name: {{emp.supervisor.name}}</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="step">
+          <span class="number">Image</span>
+          <img src="{{emp.image.url}}" alt="Image" class="img-fluid">
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  <div class="container" style="border: 1px solid black;">
+       
+    <br>            
+    <table class="table table-bordered table-hover table-condensed ">
+      <thead>
+        <tr>
+          <th>In time</th>
+          <th>Out time</th>
+          
+          
+        </tr>
+      </thead>
+      <tbody>
+
+        {% for obj in objects%}
+        <tr>
+            <td>
+                {{obj.in_time}}
+            </td>
+            
+            <td>
+                {{obj.out_time}}
+            </td>
+        </tr>
+        {%endfor%}
+        
+        <!--<tr>
+            <td>
+                Click the link to generate salary slip 
+            </td>
+            <td>
+                
+               
+            </td>
+            
+        </tr>-->
+          
+      </tbody>
+    </table>
+</div>
+{%endblock%}

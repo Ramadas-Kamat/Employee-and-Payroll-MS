@@ -6,6 +6,9 @@ urlpatterns = [
     path('register', views.register, name='register'),
     path('login', views.login, name='login'),
     path('logout', views.logout, name='logout'),
-    path('search', views.search, name='search'),
-    path('load',views.loader)
+    #path('search', views.search, name='search'),
+    path('load',views.loader),
+    path('emplogin',views.empview,name='emplogin'),
+    path("atdsearch",views.atdsearch),
+    path("empatd/<int:id>",views.show_attendance)
 ]

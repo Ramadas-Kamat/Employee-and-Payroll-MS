@@ -7,8 +7,11 @@ class PayrollAdmin(admin.ModelAdmin):
     list_display = ("empname", "date",'claims','bonus')
 
     def empname(self,obj):
-        return obj.emp_id.name
+        return obj.emp.name
     empname.short_description = 'Employee name'
+
+    
+    
 
 @admin.register(Overtime)
 class OvertimeAdmin(admin.ModelAdmin):
@@ -17,14 +20,18 @@ class OvertimeAdmin(admin.ModelAdmin):
     def empname(self,obj):
         return obj.emp_id.name
     empname.short_description = 'Employee name'
+    
+    
 
 @admin.register(Deduction)
 class DeductionAdmin(admin.ModelAdmin):
-    list_display = ("empname", "month")
+    list_display = ("empname", "month",'total_deductions')
 
     def empname(self,obj):
         return obj.emp_id.name
     empname.short_description = 'Employee name'
+
+    #exclude=('remaining_shifts',)
 
 @admin.register(Salary)
 class SalaryAdmin(admin.ModelAdmin):

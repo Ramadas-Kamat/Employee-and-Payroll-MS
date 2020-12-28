@@ -3,11 +3,12 @@ from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from .models import * #Employee, Attendance, Worksite, Category
 import datetime
+from django.http import Http404  
 #import Exception
 # Create your views here.
 
 def display(request):
-    return render(request,'index1.html')
+    return render(request,'index.html')
 def register(request):
     if request.method == 'POST':
         fn = request.POST['first_name']
@@ -43,7 +44,7 @@ def register(request):
 
 def logout(request):
     auth.logout(request)
-    return redirect('login')
+    return redirect('/')
 
 def login(request):
     if request.method == 'POST':
@@ -51,10 +52,10 @@ def login(request):
         psd = request.POST['psd']
 
         user  = auth.authenticate(username = uname, password =psd)
-
+        print(user)
         if user!=None:
             auth.login(request,user)
-            return redirect('/')
+            return redirect('/emplogin')
         else:
             messages.info(request,"Incorrect username or password")
             return redirect('login')
@@ -103,7 +104,29 @@ def loader(request):
     return render(request,'load.html',{'query':query,'ans':obj})
     #return render(request,'index1.html')
 
-def show_attendance(request):
-    atd = Attendance.objects.filter(date='2020-11-15')
+def show_attendance(request,id):
+    atd = Attendance.objects.filter(emp_id=id)
+    emp = Employee.objects.get(pk=id)
+    print(atd)
+    return render(request,'attendanceview.html',{'objects':atd,"emp":emp})
+
+def empview(request):
+    if request.user.is_authenticated:
+        print("Yes")
+        emp = Employee.objects.get(pk=2)
+        return render(request,'employee.html',{'emp':emp})
+    else:
+        print('No')
+        raise Http404
+        
+        return None
+
+def atdsearch(request):
+    if request.method=='POST':
+        name = request.POST['search']
+        emp = Employee.objects.all().filter(name__icontains=name)
+        print(emp)
+        return render(request,'attendanceresults.html',{'obj':emp})
+    else:
+        return redirect('/')
     
-    return render(request,'showatdnc.html',{'objects':atd})
