@@ -58,7 +58,7 @@
       <div class="row align-items-center">
 
         <div class="col-6 col-lg-2">
-          <h1 class="mb-0 site-logo"><a href="" class="mb-0">Baron's Kitchen</a></h1>
+          <h1 class="mb-0 site-logo"><a href="/" class="mb-0">Baron's Kitchen</a></h1>
         </div>
 
         
@@ -66,19 +66,19 @@
           <nav class="site-navigation position-relative text-right" role="navigation">
 
             <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
-              <li class="active"><a href="/" class="nav-link">Home</a></li>
+              <li><a href="/index" class="nav-link">Home</a></li>
               
 
               
               {% if user.is_authenticated %}
-              <li><a href="salary" class="nav-link">Salary</a></li>
-              <li><a href="salary/attendance" class="nav-link">Attendance</a></li>
-              <li><a href="emplogin" class="nav-link">Details</a></li>
+              <!--<li><a href="/salary/salary" class="nav-link">Salary</a></li>-->
+              <!--<li><a href="/salary/attendance" class="nav-link">Attendance</a></li>-->
+              <li><a href="/emplogin" class="nav-link">Details</a></li>
               <li><a href="/admin" class="nav-link">Hello, {{user.first_name}}</a></li>
-              <li><a href="employee/logout" class="nav-link">Logout</a></li>
+              <li><a href="/logout" class="nav-link">Logout</a></li>
               {%else%}
               <li class="has-children">
-                <a href="/admin" class="nav-link">Login</a>
+                <a href="#" class="nav-link">Login</a>
                 <ul class="dropdown">
                   <li><a href="login" class="nav-link">Employee</a></li>
                   <li><a href="{% static 'blog-single.html'%}" class="nav-link">Manager</a></li>
@@ -165,41 +165,7 @@
           across the city. This Employee Management and Payroll system is specially developed
           to ease their work.
         </p>
-        <p class="social">
-          <a href="#"><span class="icofont-twitter"></span></a>
-          <a href="#"><span class="icofont-facebook"></span></a>
-          <a href="#"><span class="icofont-dribbble"></span></a>
-          <a href="#"><span class="icofont-behance"></span></a>
-        </p>
-      </div>
-      <div class="col-md-7 ml-auto">
-        <div class="row site-section pt-0">
-          <div class="col-md-4 mb-4 mb-md-0">
-            <h3>Navigation</h3>
-            <ul class="list-unstyled">
-              <li><a href="#">Pricing</a></li>
-              <li><a href="#">Features</a></li>
-              <li><a href="#">Blog</a></li>
-              <li><a href="#">Contact</a></li>
-            </ul>
-          </div>
-          <div class="col-md-4 mb-4 mb-md-0">
-            <h3>Services</h3>
-            <ul class="list-unstyled">
-              <li><a href="#">Team</a></li>
-              <li><a href="#">Collaboration</a></li>
-              <li><a href="#">Todos</a></li>
-              <li><a href="#">Events</a></li>
-            </ul>
-          </div>
-          <div class="col-md-4 mb-4 mb-md-0">
-            <h3>Downloads</h3>
-            <ul class="list-unstyled">
-              <li><a href="#">Get from the App Store</a></li>
-              <li><a href="#">Get from the Play Store</a></li>
-            </ul>
-          </div>
-        </div>
+        
       </div>
     </div>
 

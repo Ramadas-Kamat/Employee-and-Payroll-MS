@@ -32,7 +32,9 @@ Payroll
       <div class="col-md-4">
         <div class="step">
           <span class="number">Image</span>
+          {%if obj.emp.image %}
           <img src="{{obj.emp.image.url}}" alt="Image" class="img-fluid">
+          {%endif%}
         </div>
       </div>
     </div>
@@ -133,16 +135,17 @@ Payroll
             
             </td>
         </tr>
-        <!--<tr>
+        <tr>
             <td>
                 Click the link to generate salary slip 
             </td>
             <td>
                 
-               
+              <!--<a href="/salary/salaryslip/{{obj.id}}" target="_blank" rel="noopener noreferrer">freeCodeCamp</a>-->
+              <a href="{% url 'salaryslip' id=obj.emp.id %}" target="_blank" rel="noopener noreferrer">Click</a>
             </td>
             
-        </tr>-->
+        </tr>
           
       </tbody>
     </table>

@@ -72,11 +72,11 @@
               <nav class="site-navigation position-relative text-right" role="navigation">
     
                 <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
-                  <li ><a href="#" class="nav-link">Home</a></li>
-                  <li ><a href="salary/salary" class="nav-link">Salary</a></li>
-                  <li><a href="salary/attendance" class="nav-link">Attendance</a></li>
+                  <li ><a href="#" class="active">Home</a></li>
+                  <!--<li ><a href="salary/salary" class="nav-link">Salary</a></li>-->
+                  <!--<li><a href="salary/attendance" class="nav-link">Attendance</a></li>-->
                   {% if user.is_authenticated %}
-                  <li><a href="/emplogin" class="nav-link">Hello, {{user.first_name}}</a></li>
+                  <li><a href="#" class="nav-link">Hello, {{user.first_name}}</a></li>
                   <li><a href="logout" class="nav-link">Logout</a></li>
                   {%else%}
                   <li class="has-children">
@@ -143,7 +143,7 @@
           <div class="col-12">
             <div class="row justify-content-center">
               <div class="col-md-7 text-center hero-text">
-                <h1 data-aos="fade-up" data-aos-delay="">Welcome Employee</h1>
+                <h1 data-aos="fade-up" data-aos-delay="">Welcome! {{user.first_name}}</h1>
                 <p class="mb-5" data-aos="fade-up" data-aos-delay="100">View your records, attendance and more.</p>
               </div>
             </div>
@@ -172,9 +172,16 @@
                 <li>View your attendance</li>
                 <li>Check activity</li>
               </ul>
+              
               <div class="price-cta">
                 <strong class="price"></strong>
-                <p><a href="#" class="btn btn-white">Click to view</a></p>
+                <!--<p><a href="empview/1" class="btn btn-white">Click to view</a></p>-->
+                <form action="empview/1" method="POST">
+                  {%csrf_token%}
+                  <p><input type="date" name="date" placeholder="Select a date"></p>
+                  <p><input type="submit" value="View" ><p>
+                </form>
+                <p>Attendance will be displayed on the selected month</p>
               </div>
             </div>
           </div>
@@ -189,7 +196,7 @@
               </ul>
               <div class="price-cta">
                 <strong class="price"></strong>
-                <p><a href="#" class="btn btn-white">Click to view</a></p>
+                <p><a href="empview/2" class="btn btn-white">Click to view</a></p>
               </div>
             </div>
           </div>
@@ -204,7 +211,7 @@
               </ul>
               <div class="price-cta">
                 <strong class="price"></strong>
-                <p><a href="#" class="btn btn-white">Click to view</a></p>
+                <p><a href="empview/3" class="btn btn-white">Click to view</a></p>
               </div>
             </div>
           </div>
@@ -322,44 +329,15 @@
     <div class="container">
       <div class="row">
         <div class="col-md-4 mb-4 mb-md-0">
-          <h3>About SoftLand</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius ea delectus pariatur, numquam aperiam
-            dolore nam optio dolorem facilis itaque voluptatum recusandae deleniti minus animi.</p>
-          <p class="social">
-            <a href="#"><span class="icofont-twitter"></span></a>
-            <a href="#"><span class="icofont-facebook"></span></a>
-            <a href="#"><span class="icofont-dribbble"></span></a>
-            <a href="#"><span class="icofont-behance"></span></a>
-          </p>
+          <h3>About Baron's Kitchen</h3>
+          <p>Baron's Kitchen is a catering service based in Nagpur having its services spread
+            across the city. This Employee Management and Payroll system is specially developed
+            to ease their work.</p>
+          
         </div>
-        <div class="col-md-7 ml-auto">
-          <div class="row site-section pt-0">
-            <div class="col-md-4 mb-4 mb-md-0">
-              <h3>Navigation</h3>
-              <ul class="list-unstyled">
-                <li><a href="#">Pricing</a></li>
-                <li><a href="#">Features</a></li>
-                <li><a href="#">Blog</a></li>
-                <li><a href="#">Contact</a></li>
-              </ul>
-            </div>
-            <div class="col-md-4 mb-4 mb-md-0">
-              <h3>Services</h3>
-              <ul class="list-unstyled">
-                <li><a href="#">Team</a></li>
-                <li><a href="#">Collaboration</a></li>
-                <li><a href="#">Todos</a></li>
-                <li><a href="#">Events</a></li>
-              </ul>
-            </div>
-            <div class="col-md-4 mb-4 mb-md-0">
-              <h3>Downloads</h3>
-              <ul class="list-unstyled">
-                <li><a href="#">Get from the App Store</a></li>
-                <li><a href="#">Get from the Play Store</a></li>
-              </ul>
-            </div>
-          </div>
+        
+            
+           
         </div>
       </div>
 

@@ -5,7 +5,7 @@ from .models import *
 @admin.register(Payroll)
 class PayrollAdmin(admin.ModelAdmin):
     list_display = ("empname", "date",'claims','bonus')
-
+    exclude = ('wages',)
     def empname(self,obj):
         return obj.emp.name
     empname.short_description = 'Employee name'

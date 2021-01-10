@@ -1,13 +1,33 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User, auth
+from django.contrib.auth.models import User, auth, Group
 from django.contrib import messages
 from .models import * #Employee, Attendance, Worksite, Category
-import datetime
-from django.http import Http404  
+import datetime as dt
+from django.http import Http404
+from salary.models import Payroll, Overtime
+import month
 #import Exception
 # Create your views here.
 
 def display(request):
+    '''print(request.user)
+    group = Group.objects.get(name="Employee") 
+    print(group)
+    print(group in Group.objects.all())
+    if request.user=="AnonymousUser":
+       return render(request,'index.html') 
+    try:
+        if group in Group.objects.all():
+            print("An employee")
+            return render(request,'employee.html')
+        else:
+            print("Not an employee")
+    except Exception as e:
+        print("Exception")
+        print(e)
+        print(request.user)'''
+    
+
     return render(request,'index.html')
 def register(request):
     if request.method == 'POST':
@@ -97,20 +117,34 @@ def search(request):
 
 def loader(request):
     
-    atd = Attendance.objects.filter(date='2020-12-4')
+    #atd = Attendance.objects.filter(date='2020-12-4')
+    '''mont = dt.date.today().month-1
+    year = dt.date.today().year
+    m = month.Month(year,mont)
+    atd= LabourHour.objects.all().filter(emp_id=2,date__month=\
+            mont)
     obj = atd.count()
-    query = atd.query
-    
-    return render(request,'load.html',{'query':query,'ans':obj})
+    query = atd.query'''
+    '''obj=Attendance.objects.filter(emp_id=2,date__month=11)
+    query =obj.query'''
+    #obj = Employee.objects.all().filter(name__icontains='ven') name pattern
+    obj= Payroll.objects.all().filter(emp=2,date__month=11)
+    query=obj.query
+    query = str(query)
+    query = query.replace('`',"")
+    return render(request,'load.html',{'query':query,'obj':obj})
     #return render(request,'index1.html')
 
 def show_attendance(request,id):
-    atd = Attendance.objects.filter(emp_id=id)
     emp = Employee.objects.get(pk=id)
+    print(emp.name)
+    atd = Attendance.objects.filter(emp_id=id)
+    #emp = Employee.objects.get(pk=id)
     print(atd)
-    return render(request,'attendanceview.html',{'objects':atd,"emp":emp})
+    return render(request,'detailsview.html',{'objects':atd,"emp":emp,"num1":1})
 
 def empview(request):
+
     if request.user.is_authenticated:
         print("Yes")
         emp = Employee.objects.get(pk=2)
@@ -125,8 +159,80 @@ def atdsearch(request):
     if request.method=='POST':
         name = request.POST['search']
         emp = Employee.objects.all().filter(name__icontains=name)
+        
         print(emp)
+        if len(emp)==0:
+            messages.info(request,"Could not find any employee named "+name)
+        else:
+            messages.info(request,"Results")
         return render(request,'attendanceresults.html',{'obj':emp})
     else:
         return redirect('/')
+
+def showtheirinfo(request,num):
+    uname = request.user
+    emp_id = Employee.objects.get(username=uname)
+    print(has_group(request.user,"Employee"))
+    id = emp_id.id
+    if num==1 :
+        date = request.POST['date']
+        date = date.split('-')
+        print(date[1])  #month
+        #show_attendance(request,emp_id)
+        #print('Emp name ',id.name)
+        atd = Attendance.objects.filter(emp_id=id,date__month=date[1])
+        emp = Employee.objects.get(pk=id)
+        #hours = [(a.out_time - a.in_time)%60 for a in atd]
+        hours = [a.hours for a in atd]
+        print("Hours: ",hours)
+        print(emp.name)
+        print(atd)
+        return render(request,'detailsview.html',{'objects':atd,"emp":emp,'num1':num})
+    elif num==2:
+       # payroll = Payroll.objects.all().get(emp=id,date=dt.date(2020,12,24))
+        date = dt.date.today()
+        mont = date.month
+
+        #payroll = Payroll.objects.all().get(emp=id,date=dt.date(2020,12,24))
+        payroll = Payroll.objects.all().filter(emp=id,date__month=mont)
+        if(payroll.count()>1):
+            payroll=payroll[1]
+        else:
+            payroll= payroll[0]
+        return render(request,'detailsview.html',{'obj':payroll,'num2':num})
+    elif num==3:
+        mont = dt.date.today().month
+        year = dt.date.today().year
+        m = month.Month(year,mont)
+        #ot = Overtime.objects.get(id=4)
+        ot = Overtime.objects.filter(emp_id=id,month=m)
+        print(ot)
+        
+        return render(request,'detailsview.html',{'obj':ot,'num3':num})
+    else:
+        return redirect('/')
+def handle404(request,exception):
+    return render(request,'404.html')
+def handle500(request):
+    return render(request,'404.html')
+
+def has_group(user, group_name):
+    return user.groups.filter(name=group_name).exists()
+
+def indexcheck(request):
+    print(request.user)
+    group = Group.objects.get(name="Employee") 
+    print(request.user.groups.all())
+    print(group in request.user.groups.all())
     
+    try:
+        if group in request.user.groups.all():
+            print("An employee")
+            return render(request,'employee.html')
+        else:
+            print("Not an employee")
+    except Exception as e:
+        print("Exception")
+        print(e)
+
+    return render(request,'index.html')

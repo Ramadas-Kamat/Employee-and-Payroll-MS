@@ -11,7 +11,7 @@ class Employee(models.Model):
     name = models.CharField(max_length=30)
     lname = models.CharField(max_length=30,null=True)
     username = models.ForeignKey(User,on_delete=models.CASCADE,null=True)
-    sex = models.CharField(max_length=10)
+    sex = models.CharField(max_length=10,help_text="Male or Female")
     doj = models.DateField()
     work = models.ForeignKey('Worksite',on_delete=models.CASCADE, null=True)
     category = models.ForeignKey('Category',on_delete=models.CASCADE, null=True)
@@ -29,12 +29,25 @@ class Employee(models.Model):
     def get_employee(id):
         return Employee.objects.get(id=id)
     
-    def clean(self):
+    def clean_fields(self,exclude=None):
+        print("Hi in clean")
         pattern = r'[^A-Za-z]'
-        if re.findall(pattern,self.name) != []:
-            raise ValidationError('Incorrect name')
-            
-
+        flag=False
+        msg1=msg2=msg3=''
+        if re.findall(pattern,self.name) != [] :
+            msg1 = 'Incorrect name'
+            flag=True
+            #raise ValidationError('Incorrect name')
+        if re.findall(pattern,self.lname) != [] :
+            msg2 = 'Incorrect lastname'
+            flag=True
+            #raise ValidationError('Incorrect lastname')
+        if self.sex not in ['Male','Female']:
+            msg3 = 'Incorrect sex identified'
+            flag=True
+            #raise ValidationError('Incorrect sex identified')
+        if flag:
+           raise ValidationError(msg1 +'\n'+msg2+'\n'+msg3) 
 class Worksite(models.Model):
     name = models.CharField(max_length=20)       
     location = models.CharField(max_length=20)
@@ -54,9 +67,19 @@ class Attendance(models.Model):
     class Meta:
         unique_together = ('emp_id','date')
     
+   
     @property
     def hours(self):
-        return float(self.out_time - self.in_time) 
+        end_minutes = self.out_time.hour*60 + self.out_time.minute
+        start_minutes = self. in_time.hour*60 + self.in_time.minute
+        return round((end_minutes - start_minutes) / 60,2)
+    
+
+    def clean_fields(self,exclude=None):
+        if self.in_time > self.out_time:
+            raise ValidationError("Provide valid time punches")
+    def __str__(self):
+        return str(self.emp_id.name)+' '+str(self.date)
     
     
 
@@ -89,3 +112,6 @@ class WorkingShift(models.Model):
 
     class Meta:
         unique_together = ('month','worksite','category')
+    
+    def __str__(self):
+        return "Shift for" +str(self.category.name)+ str(self.month)

@@ -1,12 +1,10 @@
 from django.contrib import admin
 from .models import *
-#from .models2 import Worksite
-# Register your models here.
-#admin.site.register((Attendance, Worksite))
-#admin.site.register(Category)
+
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
     list_display = ("id", "name",'doj','worksite')
+    exclude = ('base_sal',)
     def worksite(self,obj):
         site = obj.work
 

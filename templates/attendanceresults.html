@@ -3,7 +3,12 @@
 Attendance Page
 {%endblock%}
 {%block blue%}
-    Results
+    
+      {%for m in messages%}
+        {{m}}
+      {%endfor%}
+    
+    
 {%endblock%}
 {%block bluesmall%}
     Is this what you were looking for?
