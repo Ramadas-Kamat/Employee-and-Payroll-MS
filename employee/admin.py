@@ -1,12 +1,10 @@
 from django.contrib import admin
-from .models import Employee, Attendance , Worksite, Category
-#from .models2 import Worksite
-# Register your models here.
-#admin.site.register((Attendance, Worksite))
-#admin.site.register(Category)
+from .models import *
+
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
     list_display = ("id", "name",'doj','worksite')
+    exclude = ('base_sal',)
     def worksite(self,obj):
         site = obj.work
 
@@ -35,3 +33,25 @@ class AttendanceAdmin(admin.ModelAdmin):
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ("id", "name")
+
+@admin.register(LabourHour)
+class LabourHourAdmin(admin.ModelAdmin):
+    list_display = ("date","emp_id", 'worksite','hours','overtime_hours'\
+        ,'unrecorded_hours')
+
+@admin.register(WorkingShift)
+class WorkingShiftAdmin(admin.ModelAdmin):
+    list_display = ('month','work','cat','days')
+
+    def work(self,obj):
+        return obj.worksite.name
+    
+    def cat(self,obj):
+        return obj.category.name
+
+    def days(self, obj):
+        return obj.working_days
+    
+    cat.short_description='Category'
+    work.short_description='Worksite'
+    days.short_description='No. of working days'
