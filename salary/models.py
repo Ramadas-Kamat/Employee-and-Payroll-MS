@@ -78,8 +78,10 @@ class Deduction(models.Model):
             mont).count()
         
         
-        obj = WorkingShift.objects.get(pk=1)# use pk=1 otherwise,month=11,worksite=self.emp_id.work,category=self.emp_id.category)
+        obj = WorkingShift.objects.get(pk=5)# use pk=1 otherwise,month=11,worksite=self.emp_id.work,category=self.emp_id.category)
+        print("obj ", obj)
         total = obj.working_days
+        print("present n total ",present,total)
         return total - present
 
 class Overtime(models.Model):
