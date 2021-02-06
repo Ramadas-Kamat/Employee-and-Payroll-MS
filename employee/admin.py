@@ -1,8 +1,10 @@
 from django.contrib import admin
 from .models import *
+from .forms import WorksiteForm
 
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
+    #form=
     list_display = ("id", "name",'doj','worksite')
     exclude = ('base_sal',)
     def worksite(self,obj):
@@ -13,6 +15,7 @@ class EmployeeAdmin(admin.ModelAdmin):
 
 @admin.register(Worksite)
 class WorksiteAdmin(admin.ModelAdmin):
+    form = WorksiteForm
     list_display = ( "name",'location','man_name')
     def man_name(self,obj):
         man = obj.manager

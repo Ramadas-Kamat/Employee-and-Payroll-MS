@@ -66,8 +66,9 @@ class Deduction(models.Model):
         obj = WorkingShift.objects.get(pk=1)#month=11,worksite=self.emp_id.work,category=self.emp_id.category)
         total = obj.working_days
         print(total,present)'''
-
-        return self.leaves*30
+        pps = Salary.objects.get(employee_name=self.emp_id).pay_per_shift
+        print("PPS in deductions:",pps)
+        return self.leaves* pps
     
     @property
     def leaves(self):
@@ -77,8 +78,11 @@ class Deduction(models.Model):
         present = LabourHour.objects.all().filter(emp_id=self.emp_id,date__month=\
             mont).count()
         
-        
-        obj = WorkingShift.objects.get(pk=5)# use pk=1 otherwise,month=11,worksite=self.emp_id.work,category=self.emp_id.category)
+        mont = dt.date.today().month
+        year = dt.date.today().year
+        m = month.Month(year,mont)
+        print("month field m= ",m,"\nCategory ",self.emp_id.category)
+        obj = WorkingShift.objects.get(worksite=self.emp_id.work.id,category=self.emp_id.category,month=m)# use pk=1 otherwise,month=11,worksite=self.emp_id.work,category=self.emp_id.category)
         print("obj ", obj)
         total = obj.working_days
         print("present n total ",present,total)
@@ -115,3 +119,7 @@ class Salary(models.Model):
 
     def __str__(self):
         return str(self.employee_name.name)
+    
+    def getpps(emp_id):
+        sal = Salary.objects.get(employee_name=emp_id)
+        return sal.pay_per_shift

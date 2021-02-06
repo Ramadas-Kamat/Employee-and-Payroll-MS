@@ -128,11 +128,16 @@ def loader(request):
     '''obj=Attendance.objects.filter(emp_id=2,date__month=11)
     query =obj.query'''
     #obj = Employee.objects.all().filter(name__icontains='ven') name pattern
-    obj= Payroll.objects.all().filter(emp=2,date__month=11)
+    '''obj= Payroll.objects.all().filter(emp=2,date__month=11)
     query=obj.query
     query = str(query)
     query = query.replace('`',"")
-    return render(request,'load.html',{'query':query,'obj':obj})
+    return render(request,'load.html',{'query':query,'obj':obj})'''
+    emp = Employee.objects.get(id=5)
+    wk = emp.worksite
+    wkd = emp.work
+    print(emp, wk,wkd)
+    return render(request,'load.html',{'emp':emp})
     #return render(request,'index1.html')
 
 def show_attendance(request,id):

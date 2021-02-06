@@ -47,16 +47,32 @@ class Employee(models.Model):
             flag=True
             #raise ValidationError('Incorrect sex identified')
         if flag:
-           raise ValidationError(msg1 +'\n'+msg2+'\n'+msg3) 
+           raise ValidationError(msg1 +'\n'+msg2+'\n'+msg3)
+
+    @property
+    def worksite(self):
+        return self.work
+    
+    @property
+    def pps(self):
+        pass
+
 class Worksite(models.Model):
     name = models.CharField(max_length=20)       
     location = models.CharField(max_length=20)
-    address = models.TextField(max_length=35)
-    manager = models.ForeignKey(Employee,on_delete=models.CASCADE)
+    address = models.TextField(max_length=150)
+    manager = models.ForeignKey(Employee,on_delete=models.CASCADE,null=True,blank=True)
     contact = PhoneNumberField(null=True,blank=True,unique=True)
     def __str__(self):
         return self.name
-
+    
+    def clean_fields(self,exclude=None):
+        print("Hi in clean of worksite")
+        pattern = r'[^A-Za-z]'
+        flag=False
+        #msg1=msg2=msg3=''
+        if re.findall(pattern,self.name) != [] :
+            raise ValidationError()
 
 class Attendance(models.Model):
     date = models.DateField()
