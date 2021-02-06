@@ -68,16 +68,19 @@ class Deduction(models.Model):
         print(total,present)'''
         pps = Salary.objects.get(employee_name=self.emp_id).pay_per_shift
         print("PPS in deductions:",pps)
-        return self.leaves* pps
+        deductions=self.leaves* pps
+        print('deductions = ',deductions)
+        return deductions
     
     @property
     def leaves(self):
+        print("In leaves of Deductions")
         date = dt.date.today()
         mont = date.month  #previous month
         print('month ', mont)
         present = LabourHour.objects.all().filter(emp_id=self.emp_id,date__month=\
             mont).count()
-        
+        print(present)
         mont = dt.date.today().month
         year = dt.date.today().year
         m = month.Month(year,mont)
@@ -106,6 +109,17 @@ class Overtime(models.Model):
         pps = Salary.objects.get(employee_name=self.emp_id).pay_per_shift
         print("Hello",pps)
         return self.OT_shifts*pps
+    
+    @property
+    def total_OT_shifts(self):
+        print(self.month,self.month.month)
+        ot=LabourHour.objects.filter(emp_id=self.emp_id,date__month=self.month.month)
+        print("OT in Overtime monthly=", ot)
+        total=0
+        for o in ot:
+            total+=o.overtime_shifts
+        print("Total OT shifts", total)
+        return total
 
 class Salary(models.Model):
     employee_name  = models.ForeignKey(Employee,on_delete=models.CASCADE,null=False)
@@ -123,3 +137,4 @@ class Salary(models.Model):
     def getpps(emp_id):
         sal = Salary.objects.get(employee_name=emp_id)
         return sal.pay_per_shift
+    

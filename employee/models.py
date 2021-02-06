@@ -80,8 +80,8 @@ class Attendance(models.Model):
     in_time = models.TimeField()
     out_time = models.TimeField()
     #worksite =  models.ForeignKey(Worksite, on_delete = models.CASCADE,null=True)
-    class Meta:
-        unique_together = ('emp_id','date')
+    #class Meta:
+        #unique_together = ('emp_id','date')
     
    
     @property
@@ -98,6 +98,8 @@ class Attendance(models.Model):
         return str(self.emp_id.name)+' '+str(self.date)
     
     
+    
+    
 
 class Category(models.Model):
     name = models.CharField(max_length=15)
@@ -110,14 +112,44 @@ class LabourHour(models.Model):
     date = models.DateField()
     emp_id = models.ForeignKey(Employee, on_delete = models.CASCADE)
     worksite =  models.ForeignKey(Worksite, on_delete = models.CASCADE,null=True)
-    hours = models.FloatField(default=0)
-    overtime_hours=models.IntegerField(default=0)
+    #hours = models.FloatField(default=0)
+    #overtime_hours=models.IntegerField(default=0)
     unrecorded_hours = models.IntegerField(default=0)
     class Meta:
         unique_together = ('emp_id','date')
 
     def __str__(self):
         return str(self.emp_id.name)+str(self.date)
+    
+    @property
+    def hours(self):
+        #Get sum of all atd tuples for that day.
+        atd = Attendance.objects.filter(emp_id=self.emp_id,date=self.date)
+        sum=0
+        for a in atd:
+            sum+=a.hours
+        return sum
+    
+    @property
+    def total_shifts(self):
+        val= (self.hours+self.unrecorded_hours)/8 #1 shift=8 hr hard coded
+        min = int(val)
+        if(val-min <0.5):
+            shifts = min
+        else:
+            shifts =min+0.5
+        
+        #return min(shifts,2.5)
+        return shifts
+    
+    @property
+    def overtime_shifts(self):
+        shifts = self.total_shifts
+
+        if(shifts>=1):
+            return shifts-1
+        else:
+            return 0
 
 class WorkingShift(models.Model):
     month = MonthField(null=False,blank=False)

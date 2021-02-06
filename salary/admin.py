@@ -15,7 +15,7 @@ class PayrollAdmin(admin.ModelAdmin):
 
 @admin.register(Overtime)
 class OvertimeAdmin(admin.ModelAdmin):
-    list_display = ("empname", "month",'OT_shifts','OT_pay')
+    list_display = ("empname", "month",'OT_shifts','OT_pay','total_OT_shifts')
 
     def empname(self,obj):
         return obj.emp_id.name

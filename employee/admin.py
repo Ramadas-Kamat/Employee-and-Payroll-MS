@@ -25,7 +25,7 @@ class WorksiteAdmin(admin.ModelAdmin):
 
 @admin.register(Attendance)
 class AttendanceAdmin(admin.ModelAdmin):
-    list_display = ("date", "emp_name",'in_time','out_time')
+    list_display = ("date", "emp_name",'in_time','out_time','hours')
 
     def emp_name(self,obj):
         emp = obj.emp_id
@@ -39,8 +39,8 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(LabourHour)
 class LabourHourAdmin(admin.ModelAdmin):
-    list_display = ("date","emp_id", 'worksite','hours','overtime_hours'\
-        ,'unrecorded_hours')
+    list_display = ("date","emp_id", 'worksite','hours','unrecorded_hours',\
+        'total_shifts','overtime_shifts')
 
 @admin.register(WorkingShift)
 class WorkingShiftAdmin(admin.ModelAdmin):
