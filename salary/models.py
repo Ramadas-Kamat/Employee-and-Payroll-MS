@@ -119,6 +119,8 @@ class Overtime(models.Model):
         for o in ot:
             total+=o.overtime_shifts
         print("Total OT shifts", total)
+        self.OT_shifts = total
+        self.save()
         return total
 
 class Salary(models.Model):

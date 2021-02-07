@@ -4,16 +4,20 @@ import re
 from django.core.exceptions import ValidationError
 from month.models import MonthField
 from django.contrib.auth.models import User
+from django.utils.translation import gettext_lazy as _
+from django.forms import ModelForm
 #from .models2 import Worksite
 # Create your models here.
+GENDER = [('Male','Male'),('Female','Female')]
+TYPE = [('temp','Temporary'),('perm','Permanent'),('mng','Managerial')]
 class Employee(models.Model):
 
     name = models.CharField(max_length=30)
-    lname = models.CharField(max_length=30,null=True)
+    lname = models.CharField(max_length=30,null=True,verbose_name='Last name')
     username = models.ForeignKey(User,on_delete=models.CASCADE,null=True)
-    sex = models.CharField(max_length=10,help_text="Male or Female")
-    doj = models.DateField()
-    work = models.ForeignKey('Worksite',on_delete=models.CASCADE, null=True)
+    sex = models.CharField(max_length=10,choices=GENDER)
+    doj = models.DateField(verbose_name='Date of Joining')
+    work = models.ForeignKey('Worksite',on_delete=models.CASCADE, null=True,verbose_name="Worksite")
     category = models.ForeignKey('Category',on_delete=models.CASCADE, null=True)
     base_sal = models.FloatField(default=0)
     supervisor = models.ForeignKey('self',on_delete=models.CASCADE,null=True,blank=True)
@@ -32,22 +36,25 @@ class Employee(models.Model):
     def clean_fields(self,exclude=None):
         print("Hi in clean")
         pattern = r'[^A-Za-z]'
-        flag=False
-        msg1=msg2=msg3=''
-        if re.findall(pattern,self.name) != [] :
-            msg1 = 'Incorrect name'
-            flag=True
-            #raise ValidationError('Incorrect name')
-        if re.findall(pattern,self.lname) != [] :
-            msg2 = 'Incorrect lastname'
-            flag=True
-            #raise ValidationError('Incorrect lastname')
-        if self.sex not in ['Male','Female']:
-            msg3 = 'Incorrect sex identified'
-            flag=True
-            #raise ValidationError('Incorrect sex identified')
-        if flag:
-           raise ValidationError(msg1 +'\n'+msg2+'\n'+msg3)
+        flag1=flag2=False
+        try:
+            if re.findall(pattern,self.name) != [] :
+                
+                flag1=True
+                raise ValidationError({'name':_('Incorrect name')})
+            if re.findall(pattern,self.lname) != [] :
+                
+                flag2=True
+                raise ValidationError({'lname':_('Incorrect lastname')})
+            
+            if flag1 and flag2:
+                raise ValidationError({
+            'name':ValidationError(_("Incorrect first name")),
+            'lname':ValidationError(_("Incorrect last name"))
+            })
+        except:
+            pass
+        
 
     @property
     def worksite(self):
@@ -69,10 +76,11 @@ class Worksite(models.Model):
     def clean_fields(self,exclude=None):
         print("Hi in clean of worksite")
         pattern = r'[^A-Za-z]'
-        flag=False
-        #msg1=msg2=msg3=''
-        if re.findall(pattern,self.name) != [] :
-            raise ValidationError()
+        try:
+            if re.findall(pattern,self.name) != [] :
+                raise ValidationError({'name':_("Invalid name")})
+        except:
+            pass
 
 class Attendance(models.Model):
     date = models.DateField()
@@ -104,9 +112,19 @@ class Attendance(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=15)
     num_of_emp = models.IntegerField(default=0,null=True,blank=True)
+    type = models.CharField(max_length=10,choices=TYPE,null=True)
 
     def __str__(self):
         return str(self.name)
+    def clean_fields(self,exclude=None):
+        pattern = r'[^A-Za-z]'
+        try:
+            if re.findall(pattern,self.name) != [] :
+                raise ValidationError({'name':_("Invalid name provided")})
+        except:
+            pass
+    
+    
 
 class LabourHour(models.Model):
     date = models.DateField()
@@ -163,3 +181,4 @@ class WorkingShift(models.Model):
     
     def __str__(self):
         return "Shift for" +str(self.category.name)+ str(self.month)
+

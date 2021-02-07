@@ -1,10 +1,10 @@
 from django.contrib import admin
 from .models import *
-from .forms import WorksiteForm
+from .forms import *
 
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
-    #form=
+    form=EmployeeForm
     list_display = ("id", "name",'doj','worksite')
     exclude = ('base_sal',)
     def worksite(self,obj):
@@ -26,7 +26,7 @@ class WorksiteAdmin(admin.ModelAdmin):
 @admin.register(Attendance)
 class AttendanceAdmin(admin.ModelAdmin):
     list_display = ("date", "emp_name",'in_time','out_time','hours')
-
+    form = AttendanceForm
     def emp_name(self,obj):
         emp = obj.emp_id
 
@@ -36,6 +36,9 @@ class AttendanceAdmin(admin.ModelAdmin):
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ("id", "name")
+    form=CategoryForm
+    exclude=("num_of_emp",)
+
 
 @admin.register(LabourHour)
 class LabourHourAdmin(admin.ModelAdmin):
