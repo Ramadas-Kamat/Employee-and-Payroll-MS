@@ -14,7 +14,7 @@ class Employee(models.Model):
 
     name = models.CharField(max_length=30)
     lname = models.CharField(max_length=30,null=True,verbose_name='Last name')
-    username = models.ForeignKey(User,on_delete=models.CASCADE,null=True)
+    username = models.ForeignKey(User,on_delete=models.CASCADE,null=True,help_text="Pick a username")
     sex = models.CharField(max_length=10,choices=GENDER)
     doj = models.DateField(verbose_name='Date of Joining')
     work = models.ForeignKey('Worksite',on_delete=models.CASCADE, null=True,verbose_name="Worksite")
@@ -22,7 +22,7 @@ class Employee(models.Model):
     base_sal = models.FloatField(default=0)
     supervisor = models.ForeignKey('self',on_delete=models.CASCADE,null=True,blank=True)
     #salary = models.OneToOneField(Salary,on_delete= models.CASCADE,null=True)
-    contact = PhoneNumberField(null=True,blank=True,unique=True)
+    contact = PhoneNumberField(null=True,blank=True,unique=True,help_text="Start with country code")
     image = models.ImageField(upload_to="profpics",null=True)
     def __str__(self):
         return self.name
@@ -33,27 +33,47 @@ class Employee(models.Model):
     def get_employee(id):
         return Employee.objects.get(id=id)
     
-    def clean_fields(self,exclude=None):
+    def clean(self):
         print("Hi in clean")
         pattern = r'[^A-Za-z]'
         flag1=flag2=False
-        try:
+        '''try:
             if re.findall(pattern,self.name) != [] :
                 
                 flag1=True
+                print("In flag 1")
                 raise ValidationError({'name':_('Incorrect name')})
             if re.findall(pattern,self.lname) != [] :
                 
                 flag2=True
+                print("In flag 2")
                 raise ValidationError({'lname':_('Incorrect lastname')})
             
             if flag1 and flag2:
+                print("In flag 1 n 2")
                 raise ValidationError({
             'name':ValidationError(_("Incorrect first name")),
             'lname':ValidationError(_("Incorrect last name"))
             })
         except:
-            pass
+            pass'''
+        if re.findall(pattern,self.name) != [] :
+                
+            flag1=True
+            print("In flag 1")
+            raise ValidationError({'name':_('Incorrect name')})
+        if re.findall(pattern,self.lname) != [] :
+                
+            flag2=True
+            print("In flag 2")
+            raise ValidationError({'lname':_('Incorrect lastname')})
+            
+        if flag1 and flag2:
+            print("In flag 1 n 2")
+            raise ValidationError({
+        'name':ValidationError(_("Incorrect first name")),
+        'lname':ValidationError(_("Incorrect last name"))
+        })
         
 
     @property
@@ -118,11 +138,9 @@ class Category(models.Model):
         return str(self.name)
     def clean_fields(self,exclude=None):
         pattern = r'[^A-Za-z]'
-        try:
-            if re.findall(pattern,self.name) != [] :
-                raise ValidationError({'name':_("Invalid name provided")})
-        except:
-            pass
+        if re.findall(pattern,self.name) != [] :
+            raise ValidationError({'name':_("Invalid name provided")})
+       
     
     
 

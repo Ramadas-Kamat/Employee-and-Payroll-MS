@@ -17,7 +17,7 @@ class EmployeeForm(ModelForm):
         model = Employee
         exclude = ['base_sal']
         labels = {
-            'lname':_('Lastname'),
+            'lname':_('Last name'),
             'doj':_('Date of Joining'),
             'work':_('Worksite'),
         }
@@ -26,6 +26,27 @@ class EmployeeForm(ModelForm):
             'contact':_("Enter number starting with country code"),
             
         }
+    def clean_fields(self,exclude=None):
+        print("Hi in clean method of form")
+        pattern = r'[^A-Za-z]'
+        flag1=flag2=False
+        try:
+            if re.findall(pattern,self.name) != [] :
+                
+                flag1=True
+                raise ValidationError({'name':_('Incorrect name')})
+            if re.findall(pattern,self.lname) != [] :
+                
+                flag2=True
+                raise ValidationError({'lname':_('Incorrect lastname')})
+            
+            if flag1 and flag2:
+                raise ValidationError({
+            'name':ValidationError(_("Incorrect first name")),
+            'lname':ValidationError(_("Incorrect last name"))
+            })
+        except:
+            pass
 
 class AttendanceForm(ModelForm):
     class Meta:

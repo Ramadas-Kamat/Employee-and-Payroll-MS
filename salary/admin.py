@@ -33,7 +33,7 @@ class OvertimeAdmin(admin.ModelAdmin):
 @admin.register(Deduction)
 class DeductionAdmin(admin.ModelAdmin):
     list_display = ("empname", "month",'leaves','total_deductions')
-
+    exclude = ('remaining_shifts',)
     def empname(self,obj):
         return obj.emp_id.name
     empname.short_description = 'Employee name'

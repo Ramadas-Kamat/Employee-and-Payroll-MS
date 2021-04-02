@@ -140,3 +140,23 @@ def innovative(request):
     obj=ans[0]
     obj= round(obj,2)
     return render(request,'features.html',{'sal':obj,'year':yr,'img':image_base64})
+
+def emppresent(request):
+    if request.method=='POST':
+        date = request.POST['date']
+        print('date for view ',date)
+        obj= Attendance.objects.filter(date=date)
+        dic = {}
+        for i in obj:
+            if i.emp_id not in dic:
+                dic[i.emp_id] = i.emp_id.name
+        
+        print(dic)
+        if(obj!=[]):
+            flag=True
+            return render(request,'attendance.html',{'objects':dic.keys,'flag':flag})
+        else:
+            flag=False
+            return render(request,'attendance.html',{'flag':flag})
+    else:
+        return render(request,'attendance.html')

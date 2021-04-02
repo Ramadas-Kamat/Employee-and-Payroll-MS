@@ -4,7 +4,7 @@ from .forms import *
 
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
-    form=EmployeeForm
+    #form=EmployeeForm
     list_display = ("id", "name",'doj','worksite')
     exclude = ('base_sal',)
     def worksite(self,obj):
