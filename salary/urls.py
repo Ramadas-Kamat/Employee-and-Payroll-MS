@@ -10,5 +10,6 @@ urlpatterns = [
     path('salaryslip/<int:id>',views.salaryslip,name='salaryslip'),
     path('attendance',views.loadatd,name='attendance'),
     path('accountant',views.accountant,name='accountant'),
-    path('innovative',views.innovative,name='innovative')
+    path('innovative',views.innovative,name='innovative'),
+    path('emppresent',views.emppresent,name='emppresent'),
 ]

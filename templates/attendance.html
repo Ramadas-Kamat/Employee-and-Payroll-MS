@@ -112,7 +112,7 @@
 
             <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
               <li ><a href="/" class="nav-link">Home</a></li>
-              <li><a href="salary/salary" class="nav-link">Salary</a></li>
+              <li><a href="salary" class="nav-link">Salary</a></li>
               <li class="active"><a href="#" class="nav-link">Attendance</a></li>
               {% if user.is_authenticated %}
               <li><a href="/admin" class="nav-link">Hello, {{user.first_name}}</a></li>
@@ -192,8 +192,63 @@
       </div>
 
     </section>
-
     <section class="section pb-0">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-md-4 mr-auto">
+            <h2 class="mb-4">Check Employees present</h2>
+            <p class="mb-4">Provide a date to view the employees present on that day</p>
+            <p>
+              <form action="/salary/emppresent" method="POST">
+                {% csrf_token %}
+                <input type="date"  placeholder="Enter the date" name="date">
+                <input type="submit" value="View">
+              </form>
+            </p>
+            
+          </div>
+          
+        </div>
+      </div>
+    </section>
+
+    <section>
+      {%if flag%}
+      <div class="container" style="border: 1px solid black;">
+     
+        <br>            
+        <table class="table table-bordered table-hover table-condensed ">
+          <thead>
+            <tr>
+              <th>Employee ID</th>
+              <th>Name</th>
+  
+            </tr>
+          </thead>
+          <tbody>
+      
+            {% for obj in objects%}
+            <tr>
+                <td>
+                  {{obj.id}}
+                </td>
+                <td>
+                    {{obj.name}}
+                </td>
+                
+                
+            </tr>
+            {%endfor%}
+            
+            
+              
+          </tbody>
+        </table>
+      </div>
+      {%endif%}
+    </section>
+
+    <!--<section class="section pb-0">
       <div class="container">
         <div class="row align-items-center">
           <div class="col-md-4 mr-auto">

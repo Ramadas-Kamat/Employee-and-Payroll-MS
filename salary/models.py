@@ -66,20 +66,29 @@ class Deduction(models.Model):
         obj = WorkingShift.objects.get(pk=1)#month=11,worksite=self.emp_id.work,category=self.emp_id.category)
         total = obj.working_days
         print(total,present)'''
-
-        return self.leaves*30
+        pps = Salary.objects.get(employee_name=self.emp_id).pay_per_shift
+        print("PPS in deductions:",pps)
+        deductions=self.leaves* pps
+        print('deductions = ',deductions)
+        return deductions
     
     @property
     def leaves(self):
+        print("In leaves of Deductions")
         date = dt.date.today()
         mont = date.month  #previous month
         print('month ', mont)
         present = LabourHour.objects.all().filter(emp_id=self.emp_id,date__month=\
             mont).count()
-        
-        
-        obj = WorkingShift.objects.get(pk=1)# use pk=1 otherwise,month=11,worksite=self.emp_id.work,category=self.emp_id.category)
+        print(present)
+        mont = dt.date.today().month
+        year = dt.date.today().year
+        m = month.Month(year,mont)
+        print("month field m= ",m,"\nCategory ",self.emp_id.category)
+        obj = WorkingShift.objects.get(worksite=self.emp_id.work.id,category=self.emp_id.category,month=m)# use pk=1 otherwise,month=11,worksite=self.emp_id.work,category=self.emp_id.category)
+        print("obj ", obj)
         total = obj.working_days
+        print("present n total ",present,total)
         return total - present
 
 class Overtime(models.Model):
@@ -100,6 +109,19 @@ class Overtime(models.Model):
         pps = Salary.objects.get(employee_name=self.emp_id).pay_per_shift
         print("Hello",pps)
         return self.OT_shifts*pps
+    
+    @property
+    def total_OT_shifts(self):
+        print(self.month,self.month.month)
+        ot=LabourHour.objects.filter(emp_id=self.emp_id,date__month=self.month.month)
+        print("OT in Overtime monthly=", ot)
+        total=0
+        for o in ot:
+            total+=o.overtime_shifts
+        print("Total OT shifts", total)
+        self.OT_shifts = total
+        self.save()
+        return total
 
 class Salary(models.Model):
     employee_name  = models.ForeignKey(Employee,on_delete=models.CASCADE,null=False)
@@ -113,3 +135,8 @@ class Salary(models.Model):
 
     def __str__(self):
         return str(self.employee_name.name)
+    
+    def getpps(emp_id):
+        sal = Salary.objects.get(employee_name=emp_id)
+        return sal.pay_per_shift
+    

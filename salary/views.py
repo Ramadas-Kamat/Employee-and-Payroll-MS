@@ -51,20 +51,27 @@ def payslip(request,id):
     emp = Employee.objects.get(pk=id)
     salary = Salary.objects.get(employee_name=emp.id)
     overtime = 2'''
-    date = dt.date.today()
-    month = date.month
+    try:
+        date = dt.date.today()
+        month = date.month
 
-    #payroll = Payroll.objects.all().get(emp=id,date=dt.date(2020,12,24))
-    payroll = Payroll.objects.all().filter(emp=id,date__month=month)
-    if(payroll.count()>1):
-        payroll=payroll[1]
-    else:
-        payroll= payroll[0]
-    print(payroll.deduction.total_deductions)
-    print(payroll.amount)
+        #payroll = Payroll.objects.all().get(emp=id,date=dt.date(2020,12,24))
+        payroll = Payroll.objects.all().filter(emp=id,date__month=month)
+        if(payroll.count()>1):
+            #payroll=payroll[1]
+            payroll = payroll[(payroll.count)-1]
+        else:
+            payroll= payroll[0]
+        print(payroll.deduction.total_deductions)
+        print(payroll.amount)
 
 
-    return render(request,'payroll.html',{'obj':payroll})
+        return render(request,'payroll.html',{'obj':payroll})
+    except Exception as e:
+        messages.info(request,"Make sure you have added Salary, Deduction"\
+                 +" and Overtime"\
+             +" information")
+        return render(request,'exception.html',{'exc':e})
 
 def show(request):
     return render(request,'features.html')
@@ -133,3 +140,23 @@ def innovative(request):
     obj=ans[0]
     obj= round(obj,2)
     return render(request,'features.html',{'sal':obj,'year':yr,'img':image_base64})
+
+def emppresent(request):
+    if request.method=='POST':
+        date = request.POST['date']
+        print('date for view ',date)
+        obj= Attendance.objects.filter(date=date)
+        dic = {}
+        for i in obj:
+            if i.emp_id not in dic:
+                dic[i.emp_id] = i.emp_id.name
+        
+        print(dic)
+        if(obj!=[]):
+            flag=True
+            return render(request,'attendance.html',{'objects':dic.keys,'flag':flag})
+        else:
+            flag=False
+            return render(request,'attendance.html',{'flag':flag})
+    else:
+        return render(request,'attendance.html')

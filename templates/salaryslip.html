@@ -1,3 +1,4 @@
+{%load static%}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    
     
 </head>
 <body>
@@ -121,7 +123,23 @@
         <div class="row" style="border: 1px solid black;" >
             
             <div class="col-sm-12" style=" text-align: center;">
+                <img src="{%static 'pappa_sign.jpeg'%}" alt="signature" style="max-width: 50%;height: 150px;">
+                
                 <br><br><br><br>Accountant signature
+            </div>
+            
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row"  >
+            
+            <div class="col-sm-12" style=" text-align: center;">
+                <!--<form action="window.print()">
+                    <button type="button"><strong>Print</strong></button>-->
+                    <!--<input type="submit" value="Print">
+                </form>-->
+                <button type="button" onclick="window.print()"><strong>Print</strong></button>
             </div>
             
         </div>
