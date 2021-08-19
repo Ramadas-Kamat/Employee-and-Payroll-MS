@@ -23,6 +23,6 @@ urlpatterns = [
     path('salary/',include('salary.urls'))
 ]
 urlpatterns = urlpatterns + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
-admin.site.site_header = "Baron's Kitchen"
+admin.site.site_header = "Baron Kitchen"
 admin.site.index_title = 'Administration'                 # default: "Site administration"
 admin.site.site_title = 'Employee Management admin' # default: "Django site admin"
