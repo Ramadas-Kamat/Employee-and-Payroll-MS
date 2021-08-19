@@ -1,3 +1,4 @@
+{% load static%}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +6,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>SoftLand Bootstrap Template - Features</title>
+  <title>Baron Kitchen - Salary</title>
   <meta content="" name="descriptison">
   <meta content="" name="keywords">
 
@@ -53,25 +54,39 @@
       <div class="row align-items-center">
 
         <div class="col-6 col-lg-2">
-          <h1 class="mb-0 site-logo"><a href="index.html" class="mb-0">SoftLand</a></h1>
+          <h1 class="mb-0 site-logo"><a href="/" class="mb-0">Baron Kitchen</a></h1>
         </div>
 
         <div class="col-12 col-md-10 d-none d-lg-block">
           <nav class="site-navigation position-relative text-right" role="navigation">
 
             <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
-              <li class="active"><a href="index.html" class="nav-link">Home</a></li>
-              <li><a href="features.html" class="nav-link">Features</a></li>
+              <li ><a href="/" class="nav-link">Home</a></li>
+              <li class="active"><a href="#" class="nav-link">Salary</a></li>
               <li><a href="pricing.html" class="nav-link">Pricing</a></li>
-
+              {% if user.is_authenticated %}
+              <li><a href="/admin" class="nav-link">Hello, {{user.first_name}}</a></li>
+              <li><a href="logout" class="nav-link">Logout</a></li>
+              {%else%}
               <li class="has-children">
+                <a href="/admin" class="nav-link">Login</a>
+                <ul class="dropdown">
+                  <li><a href="{% static 'blog.html'%}" class="nav-link">Employee</a></li>
+                  <li><a href="{% static 'blog-single.html'%}" class="nav-link">Manager</a></li>
+                  <li><a href="#" class="nav-link">Accountant</a></li>
+                  <li><a href="/admin" class="nav-link">Administrator</a></li>
+                </ul>
+              </li>
+              {%endif%}
+              <!--<li class="has-children">
                 <a href="blog.html" class="nav-link">Blog</a>
                 <ul class="dropdown">
                   <li><a href="blog.html" class="nav-link">Blog</a></li>
                   <li><a href="blog-single.html" class="nav-link">Blog Sigle</a></li>
                 </ul>
               </li>
-              <li><a href="contact.html" class="nav-link">Contact</a></li>
+              <li><a href="contact.html" class="nav-link">Contact</a></li>-->
+              
             </ul>
           </nav>
         </div>
@@ -110,8 +125,8 @@
           <div class="col-12">
             <div class="row justify-content-center">
               <div class="col-md-7 text-center hero-text">
-                <h1 data-aos="fade-up" data-aos-delay="">SoftLand Features</h1>
-                <p class="mb-5" data-aos="fade-up" data-aos-delay="100">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                <h1 data-aos="fade-up" data-aos-delay="">Salary</h1>
+                <p class="mb-5" data-aos="fade-up" data-aos-delay="100">This is Salary text</p>
               </div>
             </div>
           </div>
@@ -129,7 +144,7 @@
             <p><a href="#">Read More</a></p>
           </div>
           <div class="col-md-6" data-aos="fade-left">
-            <img src="assets/img/undraw_svg_2.svg" alt="Image" class="img-fluid">
+            <img src="https://cdn.britannica.com/42/13442-004-D4870F87/Law-quadrangle-Mich-University-of-Michigan-Ann.jpg" alt="Images" class="img-fluid">
           </div>
         </div>
       </div>

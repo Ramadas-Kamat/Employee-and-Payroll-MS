@@ -15,9 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-
+from django.conf import settings
+from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('employee.urls')),
     path('salary/',include('salary.urls'))
 ]
+urlpatterns = urlpatterns + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+admin.site.site_header = "Baron Kitchen"
+admin.site.index_title = 'Administration'                 # default: "Site administration"
+admin.site.site_title = 'Employee Management admin' # default: "Django site admin"
