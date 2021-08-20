@@ -77,16 +77,14 @@ WSGI_APPLICATION = 'pms.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+#Make changes here for database connectivity
 DATABASES = {
-    
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'company',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
-        'USER': 'root',
-        'PASSWORD': 'Ramadas1#'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME':str( BASE_DIR / 'db.sqlite3'),
     }
+    
+    
 }
 
 

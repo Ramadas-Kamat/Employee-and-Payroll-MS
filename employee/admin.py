@@ -8,9 +8,11 @@ class EmployeeAdmin(admin.ModelAdmin):
     list_display = ("id", "name",'doj','worksite')
     exclude = ('base_sal',)
     def worksite(self,obj):
-        site = obj.work
-
-        return site.name
+        try:
+            site = obj.work
+            return site.name
+        except:
+            return "NA"
     worksite.short_description = "Worksite"
 
 @admin.register(Worksite)
@@ -18,9 +20,12 @@ class WorksiteAdmin(admin.ModelAdmin):
     form = WorksiteForm
     list_display = ( "name",'location','man_name')
     def man_name(self,obj):
-        man = obj.manager
+        try:
+            man = obj.manager
 
-        return man.name
+            return man.name
+        except Exception as e:
+            return "NA"
     man_name.short_description = "Manager"
 
 @admin.register(Attendance)

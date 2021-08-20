@@ -2,13 +2,10 @@ from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 import re
 from django.core.exceptions import ValidationError
-<<<<<<< HEAD
-=======
 from month.models import MonthField
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 from django.forms import ModelForm
->>>>>>> 2cef9e94d72fb1967f5535729c7c8f1b94f4cb6f
 #from .models2 import Worksite
 # Create your models here.
 GENDER = [('Male','Male'),('Female','Female')]
@@ -20,9 +17,9 @@ class Employee(models.Model):
     username = models.ForeignKey(User,on_delete=models.CASCADE,null=True,help_text="Pick a username")
     sex = models.CharField(max_length=10,choices=GENDER)
     doj = models.DateField(verbose_name='Date of Joining')
-    work = models.ForeignKey('Worksite',on_delete=models.CASCADE, null=True,verbose_name="Worksite")
+    work = models.ForeignKey('Worksite',on_delete=models.CASCADE, null=True,verbose_name="Worksite",blank=True)
     category = models.ForeignKey('Category',on_delete=models.CASCADE, null=True)
-    base_sal = models.FloatField(default=0)
+    #base_sal = models.FloatField(default=0)
     supervisor = models.ForeignKey('self',on_delete=models.CASCADE,null=True,blank=True)
     #salary = models.OneToOneField(Salary,on_delete= models.CASCADE,null=True)
     contact = PhoneNumberField(null=True,blank=True,unique=True,help_text="Start with country code")
@@ -130,9 +127,9 @@ class Attendance(models.Model):
     
     
     
-    @property
+    '''@property
     def hours(self):
-        return float(self.out_time - self.in_time) 
+        return float(self.out_time - self.in_time) '''
     
     
 
